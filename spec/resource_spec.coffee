@@ -1,4 +1,11 @@
-{ipso, mock, tag} = require 'ipso'
+{ipso, mock, tag, define} = require 'ipso'
+
+define so:                          -> ->
+define world:                      -> ->
+#define is:                       -> -> ->
+define a:                          -> ->
+define leaf:                        -> -> 
+
 
 describe 'Resource', -> 
 
@@ -40,5 +47,12 @@ describe 'Resource', ->
 
 
                 Resource '/resource/directory'
+
+
+    context 'recurse', ipso (a, leaf) -> 
+
+        context 'reveal', ipso (so, world) -> 
+
+            so world is a leaf
 
 
