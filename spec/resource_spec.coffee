@@ -53,6 +53,6 @@ describe 'Resource', ->
 
         context 'reveal', ipso (so, world) -> 
 
-            so world is a leaf -> 
-            so tree: is: -> a ->
+            so world is a   leaf -> 
+            so tree: is: ->   a
 
