@@ -1,5 +1,13 @@
 fs = require 'fs'
 
+local = 
+
+    recurse: (path) -> 
+
+        console.log recurse: path 
+
+
+
 module.exports = (opts) -> 
 
     if 'string' is typeof opts
@@ -10,10 +18,15 @@ module.exports = (opts) ->
 
             stat = fs.lstatSync path
 
-            if stat.isDirectory() 
+            if stat.isDirectory()
 
-                -> 
+                local.recurse path
+
+
 
         catch error
 
             console.log error
+
+
+module.exports._testInstance = local

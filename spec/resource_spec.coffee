@@ -1,19 +1,44 @@
-{ipso} = require 'ipso'
+{ipso, mock, tag} = require 'ipso'
 
 describe 'Resource', -> 
 
     context 'with opts as string', -> 
 
+
+        before ipso (Resource) -> 
+
+            mock 'lstatResult'
+            tag Resource
+
+        
+
         it 'determines if the string is a directory path', 
 
-            ipso (Resource, fs) -> 
+            ipso (Resource, lstatResult, fs) -> 
 
-                fs.does 
+                fs.does lstatSync: (path) -> 
 
-                    lstatSync: (path) -> 
+                    path.should.equal '/resource/directory'
+                    lstatResult.does isDirectory: ->
 
-                        path.should.equal '/resource/directory'
-                        isDirectory: -> false
 
                 Resource '/resource/directory'
+
+
+
+        it 'recurses the directory for resources', 
+
+            ipso (Resource, _testInstance, lstatResult, fs) -> 
+
+                fs.does lstatSync: (path) -> 
+
+                    lstatResult.does isDirectory: -> true
+
+                _testInstance.does recurse: (path) -> 
+
+                    path.should.equal '/resource/directory'
+
+
+                Resource '/resource/directory'
+
 
