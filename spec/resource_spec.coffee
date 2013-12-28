@@ -1,11 +1,8 @@
+#
+# {ipso, mock, tag, define} = require('vertex').then (i,o) -> 
+# 
+
 {ipso, mock, tag, define} = require 'ipso'
-
-define so:                          -> ->
-define world:                      -> ->
-#define is:                       -> -> ->
-define a:                          -> ->
-define leaf:                        -> -> 
-
 
 describe 'Resource', -> 
 
@@ -49,10 +46,4 @@ describe 'Resource', ->
                 Resource 'src/core'
 
 
-    context 'recurse', ipso (a, leaf) -> 
-
-        context 'reveal', ipso (so, world) -> 
-
-            so world is a   leaf -> 
-            so tree: is: ->   a
-
+    context 'recurse', ipso ->
