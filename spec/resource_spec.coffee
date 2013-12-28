@@ -43,16 +43,16 @@ describe 'Resource', ->
 
                 _testInstance.does recurse: (path) -> 
 
-                    path.should.equal '/resource/directory'
+                    path.should.equal 'src/core'
 
 
-                Resource '/resource/directory'
+                Resource 'src/core'
 
 
     context 'recurse', ipso (a, leaf) -> 
 
         context 'reveal', ipso (so, world) -> 
 
-            so world is a leaf
-
+            so world is a leaf -> 
+            so tree: is: -> a ->
 
