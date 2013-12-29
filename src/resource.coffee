@@ -41,7 +41,6 @@ local =
                             recursing path, fs.readdirSync(path), vertex[next], stack
 
                             path = dirname path
-                            
                             return stack.pop()
 
 
@@ -49,14 +48,39 @@ local =
 
                         ### files get a handler ###
 
-                        meta = type: 'file', path: path
+                        content = path.split('.').pop()
+                        content = null if path is content
 
-                        vertex[next] = (opts, callback) -> callback null, result: {}
+                        meta = type: 'file', path: path, content: content
+
+                        vertex[next] = (opts, callback) -> 
+
+                            switch meta.content
+
+                                when 'js' 
+
+                                    body = fs.readFileSync meta.path, 'utf8'
+
+                                    return callback null, 
+
+                                        headers: 
+
+                                            'Content-Type': 'text/javascript'
+
+                                        body: body
 
 
 
+                            return callback null, 
+                                statusCode: 500
+                                body: error: 'unsupported'
+
+
+
+                        vertex[next].$www = {}
                         vertex[next].meta = meta
 
+                        path = dirname path
                         return stack.pop()
 
 
@@ -66,10 +90,8 @@ local =
 
 
 
-
             recursing path, fs.readdirSync(path), local.sources
-
-            
+            return local.sources
 
 
         catch error
@@ -93,7 +115,7 @@ module.exports = (opts) ->
 
             if stat.isDirectory()
 
-                local.recurse path
+                return local.recurse path
 
 
 

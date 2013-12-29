@@ -99,14 +99,16 @@ describe 'Resource', ->
 
                 _testInstance.sources['dir']['file'].meta.should.eql 
 
-                    type: 'file'
-                    path: 'path/to/resource/dir/file'
+                    type:   'file'
+                    path:   'path/to/resource/dir/file'
+                    content: null
 
 
                 _testInstance.sources['file.png'].meta.should.eql 
 
                     type: 'file'
                     path: 'path/to/resource/file.png'
+                    content: 'png'
 
 
                 #
@@ -115,7 +117,11 @@ describe 'Resource', ->
 
                 _testInstance.sources['file.png'] {}, (err, res) -> 
 
-                    res.should.eql result: {}
+                    res.should.eql 
+
+                        statusCode: 500
+                        body: error: 'unsupported'
+
                     facto()
 
 
