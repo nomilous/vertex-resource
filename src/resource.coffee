@@ -25,19 +25,16 @@ local =
 
                         stack.push next
 
-                        vertex[next] ||= {}
+                       
 
-
-                        #
-                        # establish type is [file|dir] 
-                        #
-
-
+                        ### establish type is [file|dir] ###
 
                         if fs.lstatSync( path ).isDirectory()
 
+                            vertex[next] ||= {}
+
                             vertex[next].meta = 
-                            
+
                                 type: 'dir'
                                 path: path
 
@@ -50,10 +47,15 @@ local =
 
 
 
-                        vertex[next].meta = 
+                        ### files get a handler ###
 
-                            type: 'file'
-                            path: path
+                        meta = type: 'file', path: path
+
+                        vertex[next] = (opts, callback) -> callback null, result: {}
+
+
+
+                        vertex[next].meta = meta
 
                         return stack.pop()
 

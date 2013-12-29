@@ -48,9 +48,9 @@ describe 'Resource', ->
 
     context 'recurse', ipso -> 
 
-        it 'creates a reference for each resource', 
+        it 'creates a reference, with handler, for each file resource', 
 
-            ipso (Resource, _testInstance, fs) -> 
+            ipso (facto, Resource, _testInstance, fs) -> 
 
                 fs.does 
 
@@ -63,7 +63,7 @@ describe 'Resource', ->
 
                             when 'file' then return isDirectory: -> false
 
-                            when 'filetoo' then return isDirectory: -> false
+                            when 'file.png' then return isDirectory: -> false
 
                         original arguments
 
@@ -75,7 +75,7 @@ describe 'Resource', ->
 
                             when 'path/to/resource' 
 
-                                return ['dir', 'filetoo']
+                                return ['dir', 'file.png']
 
                             when 'path/to/resource/dir' 
 
@@ -85,7 +85,7 @@ describe 'Resource', ->
 
                                 return ['TODO']
 
-                            when 'path/to/resource/filetoo'
+                            when 'path/to/resource/file.png'
 
                                 return ['TODO']
 
@@ -97,25 +97,26 @@ describe 'Resource', ->
 
                 # console.log JSON.stringify _testInstance.sources, null, 2
 
-                _testInstance.sources.should.eql 
+                _testInstance.sources['dir']['file'].meta.should.eql 
 
-                    dir:  
-
-                        meta: 
-                            type: 'dir', 
-                            path: 'path/to/resource/dir'
+                    type: 'file'
+                    path: 'path/to/resource/dir/file'
 
 
-                        file: 
-                            meta: 
-                                type: 'file', 
-                                path: 'path/to/resource/dir/file'
+                _testInstance.sources['file.png'].meta.should.eql 
 
-                    filetoo: 
+                    type: 'file'
+                    path: 'path/to/resource/file.png'
 
-                        meta: 
-                            type: 'file', 
-                            path: 'path/to/resource/filetoo'
+
+                #
+                # handler
+                #
+
+                _testInstance.sources['file.png'] {}, (err, res) -> 
+
+                    res.should.eql result: {}
+                    facto()
 
 
 
